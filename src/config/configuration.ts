@@ -13,7 +13,7 @@ export default () => {
   } catch (e) {
     // 无效配置则自动忽略
   }
-  console.log('envConfig',envConfig);
+  console.log('envConfig', envConfig);
   // 合并配置
   return merge(DefaultConfig, envConfig);
 };
