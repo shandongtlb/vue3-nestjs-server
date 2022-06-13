@@ -2,7 +2,7 @@
   "name": "nest-admin",
   "version": "0.0.1",
   "description": "simple and efficient authority management system with separation of front and backends",
-  "author": "buqiyuan",
+  "author": "shandongtlb",
   "private": true,
   "license": "MIT",
   "scripts": {

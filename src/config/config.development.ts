@@ -12,10 +12,6 @@ export default {
     },
     secure: false, // or true using 443
   },
-  // amap config
-  amap: {
-    key: 'xxx',
-  },
   // jwt sign secret
   jwt: {
     secret: process.env.JWT_SECRET || '123456',
