@@ -18,6 +18,8 @@ import SysUser from 'src/entities/admin/sys-user.entity';
 import { rootRoleIdProvider } from '../core/provider/root-role-id.provider';
 import { SysDeptController } from './dept/dept.controller';
 import { SysDeptService } from './dept/dept.service';
+import { SysDeptDataController } from './deptdata/dept.controller';
+import { SysDeptDataService } from './deptdata/dept.service';
 import { SysLogController } from './log/log.controller';
 import { SysLogService } from './log/log.service';
 import { SysMenuController } from './menu/menu.controller';
@@ -26,6 +28,8 @@ import { SysRoleController } from './role/role.controller';
 import { SysRoleService } from './role/role.service';
 import { SysUserController } from './user/user.controller';
 import { SysUserService } from './user/user.service';
+import { SysDataController } from './data/user.controller';
+import { SysDataService } from './data/user.service';
 import { BullModule } from '@nestjs/bull';
 import { SysTaskController } from './task/task.controller';
 import { SysTaskService } from './task/task.service';
@@ -74,9 +78,11 @@ import { SysServeService } from './serve/serve.service';
   ],
   controllers: [
     SysUserController,
+    SysDataController,
     SysRoleController,
     SysMenuController,
     SysDeptController,
+    SysDeptDataController,
     SysLogController,
     SysTaskController,
     SysOnlineController,
@@ -86,9 +92,11 @@ import { SysServeService } from './serve/serve.service';
   providers: [
     rootRoleIdProvider(),
     SysUserService,
+    SysDataService,
     SysRoleService,
     SysMenuService,
     SysDeptService,
+    SysDeptDataService,
     SysLogService,
     SysTaskService,
     SysTaskConsumer,
@@ -100,6 +108,7 @@ import { SysServeService } from './serve/serve.service';
     ROOT_ROLE_ID,
     TypeOrmModule,
     SysUserService,
+    SysDataService,
     SysMenuService,
     SysLogService,
     SysOnlineService,
