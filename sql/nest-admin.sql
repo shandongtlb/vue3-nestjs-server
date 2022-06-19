@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2022-06-13 15:33:31
+-- 生成日期： 2022-06-19 20:48:16
 -- 服务器版本： 8.0.12
 -- PHP 版本： 7.3.4
 
@@ -32,11 +32,55 @@ CREATE TABLE `sys_config` (
   `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   `id` int(11) NOT NULL,
-  `key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `key` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- 转存表中的数据 `sys_config`
+--
+
+INSERT INTO `sys_config` (`created_at`, `updated_at`, `id`, `key`, `name`, `value`, `remark`) VALUES
+('2021-09-28 03:14:05.256120', '2021-09-28 03:14:05.256120', 1, 'sys_user_initPassword', '初始密码', '123456', '创建管理员账号的初始密码');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `sys_data`
+--
+
+CREATE TABLE `sys_data` (
+  `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `psalt` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `nick_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `head_img` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `remark` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` tinyint(4) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `sys_data_role`
+--
+
+CREATE TABLE `sys_data_role` (
+  `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -62,6 +106,21 @@ INSERT INTO `sys_department` (`created_at`, `updated_at`, `id`, `parent_id`, `na
 ('2020-09-08 05:31:32.426851', '2020-10-07 04:25:31.000000', 2, 1, '管理部门', 0),
 ('2021-12-07 08:33:18.087878', '2021-12-07 08:33:18.087878', 4, NULL, '草帽海贼团', 0),
 ('2021-12-07 08:33:45.485870', '2021-12-07 08:58:06.000000', 5, 4, '射手部', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `sys_departmentdata`
+--
+
+CREATE TABLE `sys_departmentdata` (
+  `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `order_num` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -109,40 +168,13 @@ INSERT INTO `sys_login_log` (`created_at`, `updated_at`, `id`, `user_id`, `ip`, 
 ('2021-12-10 07:24:04.789272', '2021-12-10 07:24:04.789272', 23, 1, '192.168.31.150', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.9 Safari/537.36'),
 ('2021-12-10 09:18:23.281810', '2021-12-10 09:18:23.281810', 24, 1, '192.168.31.150', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.9 Safari/537.36'),
 ('2021-12-11 01:50:36.837912', '2021-12-11 01:50:36.837912', 25, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'),
-('2022-05-17 15:17:01.416661', '2022-05-17 15:17:01.416661', 41, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47'),
-('2022-05-20 00:03:02.168381', '2022-05-20 00:03:02.168381', 42, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47'),
-('2022-05-20 10:28:33.740475', '2022-05-20 10:28:33.740475', 43, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47'),
-('2022-05-20 13:24:54.630699', '2022-05-20 13:24:54.630699', 44, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47'),
-('2022-05-21 14:18:15.550258', '2022-05-21 14:18:15.550258', 45, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47'),
-('2022-05-22 20:22:28.715452', '2022-05-22 20:22:28.715452', 46, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-26 11:32:49.342181', '2022-05-26 11:32:49.342181', 47, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-26 11:36:21.404601', '2022-05-26 11:36:21.404601', 48, 8, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-26 14:44:46.847608', '2022-05-26 14:44:46.847608', 49, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-30 22:35:09.517198', '2022-05-30 22:35:09.517198', 50, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-31 00:34:38.811321', '2022-05-31 00:34:38.811321', 51, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-05-31 17:53:53.815408', '2022-05-31 17:53:53.815408', 52, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-06-01 11:56:34.910153', '2022-06-01 11:56:34.910153', 53, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53'),
-('2022-06-03 23:52:11.345560', '2022-06-03 23:52:11.345560', 54, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30'),
-('2022-06-04 01:15:44.113949', '2022-06-04 01:15:44.113949', 55, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30'),
-('2022-06-04 23:27:06.560135', '2022-06-04 23:27:06.560135', 56, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30'),
-('2022-06-05 01:30:50.249974', '2022-06-05 01:30:50.249974', 57, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30'),
-('2022-06-05 19:58:16.920802', '2022-06-05 19:58:16.920802', 58, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30'),
-('2022-06-06 16:51:30.883818', '2022-06-06 16:51:30.883818', 59, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-06 17:10:57.549765', '2022-06-06 17:10:57.549765', 60, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 00:15:55.128080', '2022-06-07 00:15:55.128080', 61, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 00:20:57.991133', '2022-06-07 00:20:57.991133', 62, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 00:38:24.364499', '2022-06-07 00:38:24.364499', 63, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 10:27:41.717167', '2022-06-07 10:27:41.717167', 64, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 11:19:39.197493', '2022-06-07 11:19:39.197493', 65, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 15:20:28.613294', '2022-06-07 15:20:28.613294', 66, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-07 16:27:21.034052', '2022-06-07 16:27:21.034052', 67, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-08 14:13:58.429541', '2022-06-08 14:13:58.429541', 68, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-08 15:22:20.440152', '2022-06-08 15:22:20.440152', 69, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-09 14:40:14.225783', '2022-06-09 14:40:14.225783', 70, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-11 19:53:40.778434', '2022-06-11 19:53:40.778434', 71, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33'),
-('2022-06-13 00:23:16.899013', '2022-06-13 00:23:16.899013', 72, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.39'),
-('2022-06-13 00:31:49.094659', '2022-06-13 00:31:49.094659', 73, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.39'),
-('2022-06-13 10:06:31.748246', '2022-06-13 10:06:31.748246', 74, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.39');
+('2021-12-11 01:58:56.413154', '2021-12-11 01:58:56.413154', 26, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'),
+('2022-03-10 16:35:00.563373', '2022-03-10 16:35:00.563373', 27, 1, '192.168.135.73', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'),
+('2022-03-16 16:55:09.932471', '2022-03-16 16:55:09.932471', 28, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'),
+('2022-03-28 19:11:56.411868', '2022-03-28 19:11:56.411868', 29, 6, '127.0.0.1', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.9 Safari/537.36'),
+('2022-03-28 19:37:11.793517', '2022-03-28 19:37:11.793517', 30, 6, '127.0.0.1', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.9 Safari/537.36'),
+('2022-03-28 22:53:28.078204', '2022-03-28 22:53:28.078204', 31, 6, '127.0.0.1', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36'),
+('2022-03-28 22:54:01.073764', '2022-03-28 22:54:01.073764', 32, 1, '127.0.0.1', NULL, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36');
 
 -- --------------------------------------------------------
 
@@ -215,23 +247,23 @@ INSERT INTO `sys_menu` (`created_at`, `updated_at`, `id`, `parent_id`, `name`, `
 ('2021-04-21 08:54:41.018924', '2021-04-21 08:54:41.018924', 68, 4, '更改密码', NULL, 'sys:user:password', 2, NULL, 255, NULL, 1, 1),
 ('2022-03-11 01:20:42.194253', '2022-03-11 01:26:46.340768', 69, 37, '服务监控', '/sys/monitor/serve', NULL, 1, 'zaixianyonghujiankong', 255, 'views/system/monitor/serve', 1, 1),
 ('2022-03-11 01:22:47.542216', '2022-03-11 01:26:46.351888', 70, 37, '请求日志', '/sys/schedule/req-log', NULL, 1, 'zhexiantu', 255, 'views/system/monitor/req-log', 1, 1),
-('2022-05-15 18:23:18.440271', '2022-06-13 14:17:40.000000', 87, NULL, '案件分析', '/anjian', NULL, 0, 'guide', 2, NULL, 1, 1),
-('2022-05-15 18:23:58.421321', '2022-05-26 14:46:51.000000', 88, 87, '首页', '/anjian/Index', NULL, 1, 'juxing-tongguo1', 255, 'views/anjian/index', 1, 1),
-('2022-06-09 16:14:06.938319', '2022-06-13 14:17:30.000000', 100, NULL, '首页', '/index', NULL, 1, 'juxing-cuowu1', 1, 'views/index', 1, 1),
-('2022-06-13 14:14:23.172430', '2022-06-13 14:17:06.000000', 101, NULL, '基础工作', '/xianlu', NULL, 0, 'jueceyinqing', 2, NULL, 1, 1),
-('2022-06-13 14:14:50.702740', '2022-06-13 22:43:58.000000', 102, 101, '首页', '/xianlu/index', NULL, 1, 'yuanhuan-zeng', 0, 'views/xianlu/index', 1, 1),
-('2022-06-13 22:50:06.649121', '2022-06-13 22:51:28.000000', 108, 101, '基础数据', '/xianlu/jichu', NULL, 0, 'jueceyinqing', 2, NULL, 1, 1),
-('2022-06-13 22:50:32.832040', '2022-06-13 22:51:32.000000', 109, 101, '社群数据', '/xianlu/shequn', NULL, 0, 'liucheng1', 3, NULL, 1, 1),
-('2022-06-13 22:51:24.508658', '2022-06-13 23:04:58.000000', 110, 101, '所队数据', '/xianlu/suodui', NULL, 1, 'wenjian', 1, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:52:52.487893', '2022-06-13 22:55:25.000000', 111, 108, '车站数据', '/xianlu/jichu/cz', NULL, 1, 'zhexiantu', 0, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:53:58.585639', '2022-06-13 22:56:13.000000', 112, 108, '桥梁数据', '/xianlu/jichu/ql', NULL, 1, 'yunwei', 1, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:54:58.239467', '2022-06-13 22:57:04.000000', 113, 108, '四电设施', '/xianlu/jichu/sidian', NULL, 1, 'yuanhuan-zanting', 3, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:57:00.191914', '2022-06-13 22:57:00.191914', 114, 108, '涵洞数据', '/xianlu/jichu/hd', NULL, 1, 'zhuxingtu', 2, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:58:51.879186', '2022-06-13 22:58:51.879186', 115, 108, '路基路堑', '/xianlu/jichu/lj', NULL, 1, 'juxing-tongguo1', 4, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 22:59:54.443248', '2022-06-13 23:02:08.000000', 116, 109, '社区村庄', '/xianlu/shequn/cz', NULL, 1, 'yonghu1', 0, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 23:00:56.030863', '2022-06-13 23:00:56.030863', 117, 109, '三倌人员', '/xianlu/shequn/sg', NULL, 1, 'dingwei', 1, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 23:01:49.785966', '2022-06-13 23:01:49.785966', 118, 109, '五残人员', '/xianlu/shequn/wc', NULL, 1, 'jiaosequanxian', 2, 'views/xianlu/chezhan', 1, 1),
-('2022-06-13 23:02:57.299498', '2022-06-13 23:03:12.000000', 119, 101, '隐患数据', '/jichu/yh', NULL, 1, 'guanxitu', 4, 'views/xianlu/chezhan', 1, 1);
+('2021-05-16 01:40:03.423681', '2021-05-16 01:40:03.423681', 74, 73, '查询', NULL, 'netdisk:manage:list', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:40:27.605473', '2021-05-16 01:40:27.605473', 75, 73, '创建文件夹', NULL, 'netdisk:manage:mkdir', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:40:42.986572', '2021-05-16 01:40:42.986572', 76, 73, '上传', NULL, 'netdisk:manage:token', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:40:57.687251', '2021-05-16 01:41:36.000000', 77, 73, '重命名', NULL, 'netdisk:manage:rename,netdisk:manage:check', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:41:15.070191', '2021-05-16 01:41:15.070191', 78, 73, '下载', NULL, 'netdisk:manage:download', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:41:56.637858', '2021-05-16 01:41:56.637858', 79, 73, '删除', NULL, 'netdisk:manage:delete,netdisk:manage:check', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 01:42:17.793185', '2021-05-16 01:42:17.793185', 80, 73, '预览', NULL, 'netdisk:manage:info', 2, NULL, 255, NULL, 1, 1),
+('2021-05-16 23:42:36.775883', '2021-05-16 23:42:36.775883', 81, 73, '备注', NULL, 'netdisk:manage:mark', 2, NULL, 255, NULL, 1, 1),
+('2021-05-20 21:53:56.574672', '2021-05-20 21:53:56.574672', 82, 73, '复制', NULL, 'netdisk:manage:check,netdisk:manage:copy', 2, NULL, 255, NULL, 1, 1),
+('2021-05-20 21:54:18.770632', '2021-05-20 21:54:18.770632', 83, 73, '剪切', NULL, 'netdisk:manage:check,netdisk:manage:cut', 2, NULL, 255, NULL, 1, 1),
+('2021-09-28 03:26:27.243134', '2021-09-28 07:55:44.000000', 87, 86, '查询', NULL, 'sys:param-config:page,sys:param-config:info', 2, NULL, 255, NULL, 1, 1),
+('2021-09-28 07:56:03.132765', '2021-09-28 07:56:03.132765', 88, 86, '新增', NULL, 'sys:param-config:add', 2, NULL, 255, NULL, 1, 1),
+('2021-09-28 07:56:26.180445', '2021-09-28 07:56:26.180445', 89, 86, '删除', NULL, 'sys:param-config:delete', 2, NULL, 255, NULL, 1, 1),
+('2021-09-28 07:56:47.269451', '2021-09-28 07:56:47.269451', 90, 86, '更新', NULL, 'sys:param-config:update', 2, NULL, 255, NULL, 1, 1),
+('2021-10-11 09:53:38.305927', '2021-10-12 07:20:18.000000', 91, 37, '服务监控', '/sys/monitor/serve', NULL, 1, 'serve', 255, 'views/system/monitor/serve', 1, 1),
+('2022-06-19 20:41:53.014756', '2022-06-19 20:41:53.014756', 92, NULL, '数据库', '/xianlu/data', NULL, 1, 'jiankong1', 255, 'views/xianlu/data', 1, 1),
+('2022-06-19 20:42:44.810886', '2022-06-19 20:42:44.810886', 93, 92, '数据库权限', NULL, 'sys:data:add,sys:data:page,sys:data:info,sys:data:update,sys:data:delete,sys:data:password,sys:deptdata:list,sys:deptdata:move,sys:deptdata:update,sys:deptdata:delete,sys:deptdata:add,sys:deptdata:info,sys:deptdata:transfer', 2, NULL, 255, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -311,6 +343,20 @@ INSERT INTO `sys_role_department` (`created_at`, `updated_at`, `id`, `role_id`, 
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `sys_role_departmentdata`
+--
+
+CREATE TABLE `sys_role_departmentdata` (
+  `created_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updated_at` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `sys_role_menu`
 --
 
@@ -363,6 +409,9 @@ INSERT INTO `sys_role_menu` (`created_at`, `updated_at`, `id`, `role_id`, `menu_
 ('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 39, 2, 65),
 ('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 40, 2, 66),
 ('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 41, 2, 67),
+('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 42, 2, 44),
+('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 43, 2, 26),
+('2021-12-07 02:22:35.600066', '2021-12-07 02:22:35.600066', 44, 2, 27),
 ('2021-12-10 08:48:04.821154', '2021-12-10 08:48:04.821154', 45, 3, 1),
 ('2021-12-10 08:48:04.821154', '2021-12-10 08:48:04.821154', 46, 3, 3),
 ('2021-12-10 08:48:04.821154', '2021-12-10 08:48:04.821154', 47, 3, 37),
@@ -451,13 +500,7 @@ INSERT INTO `sys_role_menu` (`created_at`, `updated_at`, `id`, `role_id`, `menu_
 ('2022-03-28 22:55:14.797600', '2022-03-28 22:55:14.797600', 151, 2, 56),
 ('2022-03-28 22:55:14.797600', '2022-03-28 22:55:14.797600', 152, 2, 70),
 ('2022-03-28 22:55:35.026831', '2022-03-28 22:55:35.026831', 153, 2, 69),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 155, 2, 51),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 156, 2, 52),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 157, 2, 53),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 158, 2, 87),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 159, 2, 88),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 160, 2, 89),
-('2022-05-26 11:34:41.074030', '2022-05-26 11:34:41.074030', 161, 2, 91);
+('2022-03-28 22:57:03.949897', '2022-03-28 22:57:03.949897', 154, 2, 84);
 
 -- --------------------------------------------------------
 
@@ -488,8 +531,8 @@ CREATE TABLE `sys_task` (
 --
 
 INSERT INTO `sys_task` (`created_at`, `updated_at`, `id`, `name`, `service`, `type`, `status`, `start_time`, `end_time`, `limit`, `cron`, `every`, `data`, `job_opts`, `remark`) VALUES
-('2020-10-19 08:54:42.760785', '2022-06-13 22:28:23.000000', 2, '定时清空登录日志', 'SysLogClearJob.clearLoginLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:2:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":2}', ''),
-('2020-10-19 08:55:06.050711', '2022-06-13 22:28:23.000000', 3, '定时清空任务日志', 'SysLogClearJob.clearTaskLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:3:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":3}', '');
+('2020-10-19 08:54:42.760785', '2022-06-19 20:37:16.000000', 2, '定时清空登录日志', 'SysLogClearJob.clearLoginLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:2:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":2}', ''),
+('2020-10-19 08:55:06.050711', '2022-06-19 20:37:16.000000', 3, '定时清空任务日志', 'SysLogClearJob.clearTaskLog', 0, 1, NULL, NULL, 0, '0 0 3 ? * 1', 0, '', '{\"count\":1,\"key\":\"__default__:3:::0 0 3 ? * 1\",\"cron\":\"0 0 3 ? * 1\",\"jobId\":3}', '');
 
 -- --------------------------------------------------------
 
@@ -537,7 +580,7 @@ CREATE TABLE `sys_user` (
 INSERT INTO `sys_user` (`created_at`, `updated_at`, `id`, `department_id`, `name`, `username`, `password`, `nick_name`, `head_img`, `email`, `phone`, `remark`, `psalt`, `status`) VALUES
 ('2020-08-27 03:38:30.000000', '2022-03-28 22:52:11.845930', 1, 1, '路飞', 'rootadmin', 'ccdb5f7e5be14fe0c0528974428f79f9', '', 'https://buqiyuan.gitee.io/img/logo.jpg', 'qa894178522@qq.com', '15622472425', NULL, 'xQYCspvFb8cAW6GG1pOoUGTLqsuUSO3d', 1),
 ('2021-12-07 09:29:18.844687', '2021-12-10 13:24:34.000000', 6, 2, '路飞', 'luffyfe', 'a201c32f60232acaf95d9eb74926c8aa', '草帽小子', NULL, '1687646846@qq.com', '1355355646', '嘿嘿嘿', 'WdE7MrslDYt02ZNkGo4asBhpXXY57wzi', 1),
-('2022-05-26 11:35:27.300821', '2022-05-26 11:35:33.000000', 8, 2, '治安支队', 'zhianzhidui', '748d04158557a5c490f43c57337287ef', NULL, NULL, NULL, NULL, NULL, 'hRDLILM9DnjPNKYCL2eNkjqn5lPJ4VT6', 1);
+('2022-03-28 19:58:49.997872', '2022-03-28 23:07:08.880455', 7, 4, '娜美', 'nameife', '633564908884bf807c4fcbf260f711d2', NULL, NULL, NULL, NULL, NULL, 'U2KPLYZcUWqpghjRHy07YbPt2A8WV285', 1);
 
 -- --------------------------------------------------------
 
@@ -560,7 +603,7 @@ CREATE TABLE `sys_user_role` (
 INSERT INTO `sys_user_role` (`created_at`, `updated_at`, `id`, `user_id`, `role_id`) VALUES
 ('2020-09-14 04:10:34.371646', '2020-09-14 04:10:34.371646', 1, 1, 1),
 ('2021-12-07 09:29:18.848535', '2021-12-07 09:29:18.848535', 16, 6, 2),
-('2022-05-26 11:35:27.303275', '2022-05-26 11:35:27.303275', 18, 8, 2);
+('2022-03-28 19:58:50.002528', '2022-03-28 19:58:50.002528', 17, 7, 2);
 
 --
 -- 转储表的索引
@@ -574,9 +617,28 @@ ALTER TABLE `sys_config`
   ADD UNIQUE KEY `IDX_2c363c25cf99bcaab3a7f389ba` (`key`);
 
 --
+-- 表的索引 `sys_data`
+--
+ALTER TABLE `sys_data`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `IDX_4a33c047d8eacc0964e6b8adc4` (`username`);
+
+--
+-- 表的索引 `sys_data_role`
+--
+ALTER TABLE `sys_data_role`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 表的索引 `sys_department`
 --
 ALTER TABLE `sys_department`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `sys_departmentdata`
+--
+ALTER TABLE `sys_departmentdata`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -609,6 +671,12 @@ ALTER TABLE `sys_role`
 -- 表的索引 `sys_role_department`
 --
 ALTER TABLE `sys_role_department`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `sys_role_departmentdata`
+--
+ALTER TABLE `sys_role_departmentdata`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -651,6 +719,18 @@ ALTER TABLE `sys_user_role`
 -- 使用表AUTO_INCREMENT `sys_config`
 --
 ALTER TABLE `sys_config`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 使用表AUTO_INCREMENT `sys_data`
+--
+ALTER TABLE `sys_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- 使用表AUTO_INCREMENT `sys_data_role`
+--
+ALTER TABLE `sys_data_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -660,16 +740,22 @@ ALTER TABLE `sys_department`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- 使用表AUTO_INCREMENT `sys_departmentdata`
+--
+ALTER TABLE `sys_departmentdata`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 使用表AUTO_INCREMENT `sys_login_log`
 --
 ALTER TABLE `sys_login_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- 使用表AUTO_INCREMENT `sys_menu`
 --
 ALTER TABLE `sys_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- 使用表AUTO_INCREMENT `sys_req_log`
@@ -690,10 +776,16 @@ ALTER TABLE `sys_role_department`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- 使用表AUTO_INCREMENT `sys_role_departmentdata`
+--
+ALTER TABLE `sys_role_departmentdata`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 使用表AUTO_INCREMENT `sys_role_menu`
 --
 ALTER TABLE `sys_role_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- 使用表AUTO_INCREMENT `sys_task`
@@ -711,13 +803,13 @@ ALTER TABLE `sys_task_log`
 -- 使用表AUTO_INCREMENT `sys_user`
 --
 ALTER TABLE `sys_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 使用表AUTO_INCREMENT `sys_user_role`
 --
 ALTER TABLE `sys_user_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
