@@ -10,14 +10,14 @@ import { ADMIN_PREFIX } from '../../admin.constants';
 import { IAdminUser } from '../../admin.interface';
 import { AdminUser } from '../../core/decorators/admin-user.decorator';
 import {
-  CreateUserDto,
-  DeleteUserDto,
-  InfoUserDto,
-  PageSearchUserDto,
-  PasswordUserDto,
-  UpdateUserDto,
+  CreateDataDto,
+  DeleteDataDto,
+  InfoDataDto,
+  PageSearchDataDto,
+  PasswordDataDto,
+  UpdateDataDto,
 } from './user.dto';
-import { PageSearchUserInfo, UserDetailInfo } from './user.class';
+import { PageSearchDataInfo, DataDetailInfo } from './user.class';
 import { SysDataService } from './user.service';
 import { SysMenuService } from '../menu/menu.service';
 
@@ -26,7 +26,7 @@ import { SysMenuService } from '../menu/menu.service';
 @Controller('data')
 export class SysDataController {
   constructor(
-    private userService: SysDataService,
+    private DataService: SysDataService,
     private menuService: SysMenuService,
   ) {}
 
@@ -34,44 +34,43 @@ export class SysDataController {
     summary: '新增管理员',
   })
   @Post('add')
-  async add(@Body() dto: CreateUserDto): Promise<void> {
-    await this.userService.add(dto);
+  async add(@Body() dto: CreateDataDto): Promise<void> {
+    await this.DataService.add(dto);
   }
 
   @ApiOperation({
     summary: '查询管理员信息',
   })
-  @ApiOkResponse({ type: UserDetailInfo })
+  @ApiOkResponse({ type: DataDetailInfo })
   @Get('info')
-  async info(@Query() dto: InfoUserDto): Promise<UserDetailInfo> {
-    return await this.userService.info(dto.userId);
+  async info(@Query() dto: InfoDataDto): Promise<DataDetailInfo> {
+    return await this.DataService.info(dto.userId);
   }
 
   @ApiOperation({
     summary: '根据ID列表删除管理员',
   })
   @Post('delete')
-  async delete(@Body() dto: DeleteUserDto): Promise<void> {
-    await this.userService.delete(dto.userIds);
-    await this.userService.multiForbidden(dto.userIds);
+  async delete(@Body() dto: DeleteDataDto): Promise<void> {
+    await this.DataService.delete(dto.userIds);
+    await this.DataService.multiForbidden(dto.userIds);
   }
-
   @ApiOperation({
     summary: '分页获取管理员列表',
   })
-  @ApiOkResponse({ type: [PageSearchUserInfo] })
+  @ApiOkResponse({ type: [PageSearchDataInfo] })
   @Post('page')
   async page(
-    @Body() dto: PageSearchUserDto,
+    @Body() dto: PageSearchDataDto,
     @AdminUser() user: IAdminUser,
-  ): Promise<PageResult<PageSearchUserInfo>> {
-    const list = await this.userService.page(
+  ): Promise<PageResult<PageSearchDataInfo>> {
+    const list = await this.DataService.page(
       user.uid,
       dto.departmentIds,
       dto.page - 1,
       dto.limit,
     );
-    const total = await this.userService.count(user.uid, dto.departmentIds);
+    const total = await this.DataService.count(user.uid, dto.departmentIds);
     return {
       list,
       pagination: {
@@ -81,13 +80,12 @@ export class SysDataController {
       },
     };
   }
-
   @ApiOperation({
     summary: '更新管理员信息',
   })
   @Post('update')
-  async update(@Body() dto: UpdateUserDto): Promise<void> {
-    await this.userService.update(dto);
+  async update(@Body() dto: UpdateDataDto): Promise<void> {
+    await this.DataService.update(dto);
     await this.menuService.refreshPerms(dto.id);
   }
 
@@ -95,7 +93,7 @@ export class SysDataController {
     summary: '更改指定管理员密码',
   })
   @Post('password')
-  async password(@Body() dto: PasswordUserDto): Promise<void> {
-    await this.userService.forceUpdatePassword(dto.userId, dto.password);
+  async password(@Body() dto: PasswordDataDto): Promise<void> {
+    await this.DataService.forceUpdatePassword(dto.userId, dto.password);
   }
 }

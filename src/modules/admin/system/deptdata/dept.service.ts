@@ -8,8 +8,8 @@ import SysRoleDepartment from 'src/entities/admin/sys-role-departmentdata.entity
 import SysUser from 'src/entities/admin/sys-data.entity';
 import { EntityManager, In, Repository } from 'typeorm';
 import { SysRoleService } from '../role/role.service';
-import { DeptDetailInfo } from './dept.class';
-import { MoveDept, UpdateDeptDto } from './dept.dto';
+import { DeptDataDetailInfo } from './dept.class';
+import { MoveDeptData, UpdateDeptDataDto } from './dept.dto';
 
 @Injectable()
 export class SysDeptDataService {
@@ -34,7 +34,7 @@ export class SysDeptDataService {
   /**
    * 根据ID查找部门信息
    */
-  async info(id: number): Promise<DeptDetailInfo> {
+  async info(id: number): Promise<DeptDataDetailInfo> {
     const department = await this.deptRepositoty.findOne({ id });
     if (isEmpty(department)) {
       throw new ApiException(10019);
@@ -51,7 +51,7 @@ export class SysDeptDataService {
   /**
    * 更新部门信息
    */
-  async update(param: UpdateDeptDto): Promise<void> {
+  async update(param: UpdateDeptDataDto): Promise<void> {
     await this.deptRepositoty.update(param.id, {
       parentId: param.parentId === -1 ? undefined : param.parentId,
       name: param.name,
@@ -82,7 +82,7 @@ export class SysDeptDataService {
   /**
    * 移动排序
    */
-  async move(depts: MoveDept[]): Promise<void> {
+  async move(depts: MoveDeptData[]): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
       for (let i = 0; i < depts.length; i++) {
         await manager.update(

@@ -8,12 +8,12 @@ import SysUser from 'src/entities/admin/sys-data.entity';
 import { UtilService } from 'src/shared/services/util.service';
 import { EntityManager, In, Not, Repository } from 'typeorm';
 import {
-  CreateUserDto,
-  UpdatePasswordDto,
-  UpdateUserDto,
-  UpdateUserInfoDto,
+  CreateDataDto,
+  UpdatePasswordDataDto,
+  UpdateDataDto,
+  UpdateDataInfoDto,
 } from './user.dto';
-import { AccountInfo, PageSearchUserInfo } from './user.class';
+import { AccountInfoData, PageSearchDataInfo } from './user.class';
 import { ROOT_ROLE_ID } from 'src/modules/admin/admin.constants';
 import { RedisService } from 'src/shared/services/redis.service';
 import { SysParamConfigService } from '../param-config/param-config.service';
@@ -49,7 +49,7 @@ export class SysDataService {
    * @param uid user id
    * @param ip login ip
    */
-  async getAccountInfo(uid: number, ip?: string): Promise<AccountInfo> {
+  async getAccountInfo(uid: number, ip?: string): Promise<AccountInfoData> {
     const user: SysUser = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
@@ -68,14 +68,14 @@ export class SysDataService {
   /**
    * 更新个人信息
    */
-  async updatePersonInfo(uid: number, info: UpdateUserInfoDto): Promise<void> {
+  async updatePersonInfo(uid: number, info: UpdateDataInfoDto): Promise<void> {
     await this.userRepository.update(uid, info);
   }
 
   /**
    * 更改管理员密码
    */
-  async updatePassword(uid: number, dto: UpdatePasswordDto): Promise<void> {
+  async updatePassword(uid: number, dto: UpdatePasswordDataDto): Promise<void> {
     const user = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
@@ -107,7 +107,7 @@ export class SysDataService {
    * 增加系统用户，如果返回false则表示已存在该用户
    * @param param Object 对应SysUser实体类
    */
-  async add(param: CreateUserDto): Promise<void> {
+  async add(param: CreateDataDto): Promise<void> {
     // const insertData: any = { ...CreateUserDto };
     const exists = await this.userRepository.findOne({
       username: param.username,
@@ -153,7 +153,7 @@ export class SysDataService {
   /**
    * 更新用户信息
    */
-  async update(param: UpdateUserDto): Promise<void> {
+  async update(param: UpdateDataDto): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
       await manager.update(SysUser, param.id, {
         departmentId: param.departmentId,
@@ -263,7 +263,7 @@ export class SysDataService {
     deptIds: number[],
     page: number,
     count: number,
-  ): Promise<PageSearchUserInfo[]> {
+  ): Promise<PageSearchDataInfo[]> {
     const queryAll: boolean = isEmpty(deptIds);
     const rootUserId = await this.findRootUserId();
     const result = await this.userRepository
@@ -286,7 +286,7 @@ export class SysDataService {
       .offset(page * count)
       .limit(count)
       .getRawMany();
-    const dealResult: PageSearchUserInfo[] = [];
+    const dealResult: PageSearchDataInfo[] = [];
     // 过滤去重
     result.forEach((e) => {
       const index = findIndex(dealResult, (e2) => e2.id === e.user_id);

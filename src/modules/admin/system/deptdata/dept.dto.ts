@@ -11,7 +11,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class CreateDeptDto {
+export class CreateDeptDataDto {
   @ApiProperty({ description: '部门名称' })
   @IsString()
   @MinLength(1)
@@ -28,21 +28,21 @@ export class CreateDeptDto {
   orderNum: number;
 }
 
-export class UpdateDeptDto extends CreateDeptDto {
+export class UpdateDeptDataDto extends CreateDeptDataDto {
   @ApiProperty({ description: '需要更新的部门id' })
   @IsInt()
   @Min(0)
   id: number;
 }
 
-export class DeleteDeptDto {
+export class DeleteDeptDataDto {
   @ApiProperty({ description: '删除的系统部门ID' })
   @IsInt()
   @Min(0)
   departmentId: number;
 }
 
-export class InfoDeptDto {
+export class InfoDeptDataDto {
   @ApiProperty({ description: '查询的系统部门ID' })
   @Type(() => Number)
   @IsInt()
@@ -50,7 +50,7 @@ export class InfoDeptDto {
   departmentId: number;
 }
 
-export class TransferDeptDto {
+export class TransferDeptDataDto {
   @ApiProperty({ description: '需要转移的管理员列表编号', type: [Number] })
   @IsArray()
   @ArrayNotEmpty()
@@ -62,7 +62,7 @@ export class TransferDeptDto {
   departmentId: number;
 }
 
-export class MoveDept {
+export class MoveDeptData {
   @ApiProperty({ description: '当前部门ID' })
   @IsInt()
   @Min(0)
@@ -75,9 +75,9 @@ export class MoveDept {
   parentId: number;
 }
 
-export class MoveDeptDto {
-  @ApiProperty({ description: '部门列表', type: [MoveDept] })
+export class MoveDeptDataDto {
+  @ApiProperty({ description: '部门列表', type: [MoveDeptData] })
   @ValidateNested({ each: true })
-  @Type(() => MoveDept)
-  depts: MoveDept[];
+  @Type(() => MoveDeptData)
+  depts: MoveDeptData[];
 }

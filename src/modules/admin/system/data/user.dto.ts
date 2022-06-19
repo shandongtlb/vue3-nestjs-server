@@ -19,7 +19,7 @@ import {
 import { isEmpty } from 'lodash';
 import { PageOptionsDto } from '../../../../common/dto/page.dto';
 
-export class UpdateUserInfoDto {
+export class UpdateDataInfoDto {
   @ApiProperty({
     required: false,
     description: '用户呢称',
@@ -53,7 +53,7 @@ export class UpdateUserInfoDto {
   remark: string;
 }
 
-export class UpdatePasswordDto {
+export class UpdatePasswordDataDto {
   @ApiProperty({
     description: '更改前的密码',
   })
@@ -70,7 +70,7 @@ export class UpdatePasswordDto {
   newPassword: string;
 }
 
-export class CreateUserDto {
+export class CreateDataDto {
   @ApiProperty({
     description: '所属部门编号',
   })
@@ -142,7 +142,7 @@ export class CreateUserDto {
   status: number;
 }
 
-export class UpdateUserDto extends CreateUserDto {
+export class UpdateDataDto extends CreateDataDto {
   @ApiProperty({
     description: '用户ID',
   })
@@ -151,7 +151,7 @@ export class UpdateUserDto extends CreateUserDto {
   id: number;
 }
 
-export class InfoUserDto {
+export class InfoDataDto {
   @ApiProperty({
     description: '用户ID',
   })
@@ -161,7 +161,7 @@ export class InfoUserDto {
   userId: number;
 }
 
-export class DeleteUserDto {
+export class DeleteDataDto {
   @ApiProperty({
     description: '需要删除的用户ID列表',
     type: [Number],
@@ -171,7 +171,7 @@ export class DeleteUserDto {
   userIds: number[];
 }
 
-export class PageSearchUserDto extends PageOptionsDto {
+export class PageSearchDataDto extends PageOptionsDto {
   @ApiProperty({
     required: false,
     description: '部门列表',
@@ -183,7 +183,7 @@ export class PageSearchUserDto extends PageOptionsDto {
   departmentIds: number[];
 }
 
-export class PasswordUserDto {
+export class PasswordDataDto {
   @ApiProperty({
     description: '管理员ID',
   })

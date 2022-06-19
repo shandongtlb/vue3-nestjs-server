@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import SysUser from 'src/entities/admin/sys-data.entity';
+import SysData from 'src/entities/admin/sys-data.entity';
 
-export class AccountInfo {
+export class AccountInfoData {
   @ApiProperty()
   name: string;
 
@@ -24,7 +24,7 @@ export class AccountInfo {
   loginIp: string;
 }
 
-export class PageSearchUserInfo {
+export class PageSearchDataInfo {
   @ApiProperty()
   createdAt: string;
 
@@ -70,7 +70,7 @@ export class PageSearchUserInfo {
   roleNames: string[];
 }
 
-export class UserDetailInfo extends SysUser {
+export class DataDetailInfo extends SysData {
   @ApiProperty({
     description: '关联角色',
   })
