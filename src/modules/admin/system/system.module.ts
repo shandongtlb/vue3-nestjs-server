@@ -6,15 +6,19 @@ import {
   SYS_TASK_QUEUE_PREFIX,
 } from 'src/modules/admin/admin.constants';
 import SysDepartment from 'src/entities/admin/sys-department.entity';
+import SysDepartmentdata from 'src/entities/admin/sys-departmentdata.entity';
 import SysLoginLog from 'src/entities/admin/sys-login-log.entity';
 import SysMenu from 'src/entities/admin/sys-menu.entity';
 import SysRoleDepartment from 'src/entities/admin/sys-role-department.entity';
+import SysRoleDepartmentdata from 'src/entities/admin/sys-role-departmentdata.entity';
 import SysRoleMenu from 'src/entities/admin/sys-role-menu.entity';
 import SysRole from 'src/entities/admin/sys-role.entity';
 import SysTaskLog from 'src/entities/admin/sys-task-log.entity';
 import SysTask from 'src/entities/admin/sys-task.entity';
 import SysUserRole from 'src/entities/admin/sys-user-role.entity';
 import SysUser from 'src/entities/admin/sys-user.entity';
+import SysDataRole from 'src/entities/admin/sys-data-role.entity';
+import SysData from 'src/entities/admin/sys-data.entity';
 import { rootRoleIdProvider } from '../core/provider/root-role-id.provider';
 import { SysDeptController } from './dept/dept.controller';
 import { SysDeptService } from './dept/dept.service';
@@ -50,8 +54,12 @@ import { SysServeService } from './serve/serve.service';
       SysUser,
       SysDepartment,
       SysUserRole,
+      SysDepartmentdata,
+      SysRoleDepartmentdata,
       SysMenu,
       SysRoleMenu,
+      SysDataRole,
+      SysData,
       SysRole,
       SysRoleDepartment,
       SysUserRole,
