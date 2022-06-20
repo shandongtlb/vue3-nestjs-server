@@ -271,7 +271,7 @@ export class SysDataService {
     count: number,
   ): Promise<PageSearchDataInfo[]> {
     const queryAll: boolean = isEmpty(deptIds);
-    const rootUserId = await this.findRootDataUserId();
+    const rootUserId = await this.findRootDataId();
     const result = await this.userRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect(
