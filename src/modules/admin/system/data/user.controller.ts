@@ -35,7 +35,7 @@ export class SysDataController {
   })
   @Post('add')
   async add(@Body() dto: CreateDataDto): Promise<void> {
-    await this.DataService.add(dto);
+    await this.DataService.addData(dto);
   }
 
   @ApiOperation({
@@ -44,7 +44,7 @@ export class SysDataController {
   @ApiOkResponse({ type: DataDetailInfo })
   @Get('info')
   async info(@Query() dto: InfoDataDto): Promise<DataDetailInfo> {
-    return await this.DataService.info(dto.userId);
+    return await this.DataService.infoData(dto.userId);
   }
 
   @ApiOperation({
@@ -52,8 +52,8 @@ export class SysDataController {
   })
   @Post('delete')
   async delete(@Body() dto: DeleteDataDto): Promise<void> {
-    await this.DataService.delete(dto.userIds);
-    await this.DataService.multiForbidden(dto.userIds);
+    await this.DataService.deleteData(dto.userIds);
+    await this.DataService.multiDataForbidden(dto.userIds);
   }
   @ApiOperation({
     summary: '分页获取管理员列表',
@@ -70,7 +70,7 @@ export class SysDataController {
       dto.page - 1,
       dto.limit,
     );
-    const total = await this.DataService.count(user.uid, dto.departmentIds);
+    const total = await this.DataService.countData(user.uid, dto.departmentIds);
     return {
       list,
       pagination: {
@@ -85,7 +85,7 @@ export class SysDataController {
   })
   @Post('update')
   async update(@Body() dto: UpdateDataDto): Promise<void> {
-    await this.DataService.update(dto);
+    await this.DataService.updateData(dto);
     await this.menuService.refreshPerms(dto.id);
   }
 
@@ -94,6 +94,6 @@ export class SysDataController {
   })
   @Post('password')
   async password(@Body() dto: PasswordDataDto): Promise<void> {
-    await this.DataService.forceUpdatePassword(dto.userId, dto.password);
+    await this.DataService.forceUpdateDataPassword(dto.userId, dto.password);
   }
 }

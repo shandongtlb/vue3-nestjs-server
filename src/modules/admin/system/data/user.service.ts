@@ -37,7 +37,7 @@ export class SysDataService {
   /**
    * 根据用户名查找已经启用的用户
    */
-  async findUserByUserName(username: string): Promise<SysUser | undefined> {
+  async findDataByUserName(username: string): Promise<SysUser | undefined> {
     return await this.userRepository.findOne({
       username: username,
       status: 1,
@@ -49,7 +49,7 @@ export class SysDataService {
    * @param uid user id
    * @param ip login ip
    */
-  async getAccountInfo(uid: number, ip?: string): Promise<AccountInfoData> {
+  async getAccountDataInfo(uid: number, ip?: string): Promise<AccountInfoData> {
     const user: SysUser = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
@@ -68,14 +68,20 @@ export class SysDataService {
   /**
    * 更新个人信息
    */
-  async updatePersonInfo(uid: number, info: UpdateDataInfoDto): Promise<void> {
+  async updatePersonDataInfo(
+    uid: number,
+    info: UpdateDataInfoDto,
+  ): Promise<void> {
     await this.userRepository.update(uid, info);
   }
 
   /**
    * 更改管理员密码
    */
-  async updatePassword(uid: number, dto: UpdatePasswordDataDto): Promise<void> {
+  async updateDataPassword(
+    uid: number,
+    dto: UpdatePasswordDataDto,
+  ): Promise<void> {
     const user = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
@@ -87,27 +93,27 @@ export class SysDataService {
     }
     const password = this.util.md5(`${dto.newPassword}${user.psalt}`);
     await this.userRepository.update({ id: uid }, { password });
-    await this.upgradePasswordV(user.id);
+    await this.upgradePasswordVData(user.id);
   }
 
   /**
    * 直接更改管理员密码
    */
-  async forceUpdatePassword(uid: number, password: string): Promise<void> {
+  async forceUpdateDataPassword(uid: number, password: string): Promise<void> {
     const user = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
     const newPassword = this.util.md5(`${password}${user.psalt}`);
     await this.userRepository.update({ id: uid }, { password: newPassword });
-    await this.upgradePasswordV(user.id);
+    await this.upgradePasswordVData(user.id);
   }
 
   /**
    * 增加系统用户，如果返回false则表示已存在该用户
    * @param param Object 对应SysUser实体类
    */
-  async add(param: CreateDataDto): Promise<void> {
+  async addData(param: CreateDataDto): Promise<void> {
     // const insertData: any = { ...CreateUserDto };
     const exists = await this.userRepository.findOne({
       username: param.username,
@@ -153,7 +159,7 @@ export class SysDataService {
   /**
    * 更新用户信息
    */
-  async update(param: UpdateDataDto): Promise<void> {
+  async updateData(param: UpdateDataDto): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
       await manager.update(SysUser, param.id, {
         departmentId: param.departmentId,
@@ -177,7 +183,7 @@ export class SysDataService {
       await manager.insert(SysUserRole, insertRoles);
       if (param.status === 0) {
         // 禁用状态
-        await this.forbidden(param.id);
+        await this.forbiddenData(param.id);
       }
     });
   }
@@ -186,7 +192,7 @@ export class SysDataService {
    * 查找用户信息
    * @param id 用户id
    */
-  async info(
+  async infoData(
     id: number,
   ): Promise<SysUser & { roles: number[]; departmentName: string }> {
     const user: any = await this.userRepository.findOne(id);
@@ -210,7 +216,7 @@ export class SysDataService {
   /**
    * 查找列表里的信息
    */
-  async infoList(ids: number[]): Promise<SysUser[]> {
+  async infoDataList(ids: number[]): Promise<SysUser[]> {
     const users = await this.userRepository.findByIds(ids);
     return users;
   }
@@ -218,8 +224,8 @@ export class SysDataService {
   /**
    * 根据ID列表删除用户
    */
-  async delete(userIds: number[]): Promise<void | never> {
-    const rootUserId = await this.findRootUserId();
+  async deleteData(userIds: number[]): Promise<void | never> {
+    const rootUserId = await this.findRootDataId();
     if (userIds.includes(rootUserId)) {
       throw new Error('can not delete root user!');
     }
@@ -230,9 +236,9 @@ export class SysDataService {
   /**
    * 根据部门ID列举用户条数：除去超级管理员
    */
-  async count(uid: number, deptIds: number[]): Promise<number> {
+  async countData(uid: number, deptIds: number[]): Promise<number> {
     const queryAll: boolean = isEmpty(deptIds);
-    const rootUserId = await this.findRootUserId();
+    const rootUserId = await this.findRootDataId();
     if (queryAll) {
       return await this.userRepository.count({
         id: Not(In([rootUserId, uid])),
@@ -247,7 +253,7 @@ export class SysDataService {
   /**
    * 查找超管的用户ID
    */
-  async findRootUserId(): Promise<number> {
+  async findRootDataId(): Promise<number> {
     const result = await this.userRoleRepository.findOne({
       id: this.rootRoleId,
     });
@@ -265,7 +271,7 @@ export class SysDataService {
     count: number,
   ): Promise<PageSearchDataInfo[]> {
     const queryAll: boolean = isEmpty(deptIds);
-    const rootUserId = await this.findRootUserId();
+    const rootUserId = await this.findRootDataUserId();
     const result = await this.userRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect(
@@ -319,7 +325,7 @@ export class SysDataService {
   /**
    * 禁用用户
    */
-  async forbidden(uid: number): Promise<void> {
+  async forbiddenData(uid: number): Promise<void> {
     await this.redisService.getRedis().del(`admin:passwordVersion:${uid}`);
     await this.redisService.getRedis().del(`admin:token:${uid}`);
     await this.redisService.getRedis().del(`admin:perms:${uid}`);
@@ -328,7 +334,7 @@ export class SysDataService {
   /**
    * 禁用多个用户
    */
-  async multiForbidden(uids: number[]): Promise<void> {
+  async multiDataForbidden(uids: number[]): Promise<void> {
     if (uids) {
       const pvs: string[] = [];
       const ts: string[] = [];
@@ -347,7 +353,7 @@ export class SysDataService {
   /**
    * 升级用户版本密码
    */
-  async upgradePasswordV(id: number): Promise<void> {
+  async upgradePasswordVData(id: number): Promise<void> {
     // admin:passwordVersion:${param.id}
     const v = await this.redisService
       .getRedis()

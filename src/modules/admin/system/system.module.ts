@@ -13,6 +13,8 @@ import SysRoleDepartment from 'src/entities/admin/sys-role-department.entity';
 import SysRoleDepartmentdata from 'src/entities/admin/sys-role-departmentdata.entity';
 import SysRoleMenu from 'src/entities/admin/sys-role-menu.entity';
 import SysRole from 'src/entities/admin/sys-role.entity';
+import SysRoleMenuData from 'src/entities/admin/sys-role-menudata.entity';
+import SysRoleData from 'src/entities/admin/sys-roledata.entity';
 import SysTaskLog from 'src/entities/admin/sys-task-log.entity';
 import SysTask from 'src/entities/admin/sys-task.entity';
 import SysUserRole from 'src/entities/admin/sys-user-role.entity';
@@ -30,6 +32,8 @@ import { SysMenuController } from './menu/menu.controller';
 import { SysMenuService } from './menu/menu.service';
 import { SysRoleController } from './role/role.controller';
 import { SysRoleService } from './role/role.service';
+import { SysRoleDataController } from './roledata/role.controller';
+import { SysRoleDataService } from './roledata/role.service';
 import { SysUserController } from './user/user.controller';
 import { SysUserService } from './user/user.service';
 import { SysDataController } from './data/user.controller';
@@ -58,9 +62,11 @@ import { SysServeService } from './serve/serve.service';
       SysRoleDepartmentdata,
       SysMenu,
       SysRoleMenu,
+      SysRoleMenuData,
       SysDataRole,
       SysData,
       SysRole,
+      SysRoleData,
       SysRoleDepartment,
       SysUserRole,
       SysLoginLog,
@@ -90,6 +96,7 @@ import { SysServeService } from './serve/serve.service';
     SysRoleController,
     SysMenuController,
     SysDeptController,
+    SysRoleDataController,
     SysDeptDataController,
     SysLogController,
     SysTaskController,
@@ -103,6 +110,7 @@ import { SysServeService } from './serve/serve.service';
     SysDataService,
     SysRoleService,
     SysMenuService,
+    SysRoleDataService,
     SysDeptService,
     SysDeptDataService,
     SysLogService,

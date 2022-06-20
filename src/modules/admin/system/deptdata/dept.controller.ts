@@ -67,7 +67,9 @@ export class SysDeptDataController {
   @ApiOperation({ summary: '查询单个系统部门信息' })
   @ApiOkResponse({ type: DeptDataDetailInfo })
   @Get('info')
-  async info(@Query() infoDeptDto: InfoDeptDataDto): Promise<DeptDataDetailInfo> {
+  async info(
+    @Query() infoDeptDto: InfoDeptDataDto,
+  ): Promise<DeptDataDetailInfo> {
     return await this.deptService.info(infoDeptDto.departmentId);
   }
 

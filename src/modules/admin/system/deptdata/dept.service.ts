@@ -3,9 +3,9 @@ import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { includes, isEmpty } from 'lodash';
 import { ROOT_ROLE_ID } from 'src/modules/admin/admin.constants';
 import { ApiException } from 'src/common/exceptions/api.exception';
-import SysDepartment from 'src/entities/admin/sys-departmentdata.entity';
-import SysRoleDepartment from 'src/entities/admin/sys-role-departmentdata.entity';
-import SysUser from 'src/entities/admin/sys-data.entity';
+import SysDataDepartment from 'src/entities/admin/sys-departmentdata.entity';
+import SysRoleDataDepartment from 'src/entities/admin/sys-role-departmentdata.entity';
+import SysData from 'src/entities/admin/sys-data.entity';
 import { EntityManager, In, Repository } from 'typeorm';
 import { SysRoleService } from '../role/role.service';
 import { DeptDataDetailInfo } from './dept.class';
@@ -14,11 +14,11 @@ import { MoveDeptData, UpdateDeptDataDto } from './dept.dto';
 @Injectable()
 export class SysDeptDataService {
   constructor(
-    @InjectRepository(SysUser) private userRepositoty: Repository<SysUser>,
-    @InjectRepository(SysDepartment)
-    private deptRepositoty: Repository<SysDepartment>,
-    @InjectRepository(SysRoleDepartment)
-    private roleDeptRepositoty: Repository<SysUser>,
+    @InjectRepository(SysData) private userRepositoty: Repository<SysData>,
+    @InjectRepository(SysDataDepartment)
+    private deptRepositoty: Repository<SysDataDepartment>,
+    @InjectRepository(SysRoleDataDepartment)
+    private roleDeptRepositoty: Repository<SysData>,
     @InjectEntityManager() private entityManager: EntityManager,
     @Inject(ROOT_ROLE_ID) private rootRoleId: number,
     private roleService: SysRoleService,
@@ -27,7 +27,7 @@ export class SysDeptDataService {
   /**
    * 获取所有部门
    */
-  async list(): Promise<SysDepartment[]> {
+  async list(): Promise<SysDataDepartment[]> {
     return await this.deptRepositoty.find({ order: { orderNum: 'DESC' } });
   }
 
@@ -86,7 +86,7 @@ export class SysDeptDataService {
     await this.entityManager.transaction(async (manager) => {
       for (let i = 0; i < depts.length; i++) {
         await manager.update(
-          SysDepartment,
+          SysDataDepartment,
           { id: depts[i].id },
           { parentId: depts[i].parentId },
         );
@@ -125,7 +125,7 @@ export class SysDeptDataService {
   /**
    * 根据当前角色id获取部门列表
    */
-  async getDepts(uid: number): Promise<SysDepartment[]> {
+  async getDepts(uid: number): Promise<SysDataDepartment[]> {
     const roleIds = await this.roleService.getRoleIdByUser(uid);
     let depts: any = [];
     if (includes(roleIds, this.rootRoleId)) {
