@@ -136,7 +136,7 @@ export class SysDeptDataService {
       depts = await this.deptRepositoty
         .createQueryBuilder('dept')
         .innerJoinAndSelect(
-          'sys_role_department',
+          'sys_role_departmentdata',
           'role_dept',
           'dept.id = role_dept.department_id',
         )

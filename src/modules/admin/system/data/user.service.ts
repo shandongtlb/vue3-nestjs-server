@@ -275,16 +275,20 @@ export class SysDataService {
     const result = await this.userRepository
       .createQueryBuilder('user')
       .innerJoinAndSelect(
-        'sys_department',
+        'sys_departmentdata',
         'dept',
         'dept.id = user.departmentId',
       )
       .innerJoinAndSelect(
-        'sys_user_role',
+        'sys_data_role',
         'user_role',
         'user_role.user_id = user.id',
       )
-      .innerJoinAndSelect('sys_role', 'role', 'role.id = user_role.role_id')
+      .innerJoinAndSelect(
+        'sys_role_data',
+        'role',
+        'role.id = user_role.role_id',
+      )
       .where('user.id NOT IN (:...ids)', { ids: [rootUserId, uid] })
       .andWhere(queryAll ? '1 = 1' : 'user.departmentId IN (:...deptIds)', {
         deptIds,
