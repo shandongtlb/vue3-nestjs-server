@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { findIndex, isEmpty } from 'lodash';
 import { ApiException } from 'src/common/exceptions/api.exception';
-import SysDepartment from 'src/entities/admin/sys-departmentdata.entity';
-import SysUserRole from 'src/entities/admin/sys-data-role.entity';
-import SysUser from 'src/entities/admin/sys-data.entity';
+import SysDepartmentData from 'src/entities/admin/sys-departmentdata.entity';
+import SysDataRole from 'src/entities/admin/sys-data-role.entity';
+import SysData from 'src/entities/admin/sys-data.entity';
 import { UtilService } from 'src/shared/services/util.service';
 import { EntityManager, In, Not, Repository } from 'typeorm';
 import {
@@ -22,11 +22,11 @@ import { SYS_USER_INITPASSWORD } from 'src/common/contants/param-config.contants
 @Injectable()
 export class SysDataService {
   constructor(
-    @InjectRepository(SysUser) private userRepository: Repository<SysUser>,
-    @InjectRepository(SysDepartment)
-    private departmentRepository: Repository<SysDepartment>,
-    @InjectRepository(SysUserRole)
-    private userRoleRepository: Repository<SysUserRole>,
+    @InjectRepository(SysData) private userRepository: Repository<SysData>,
+    @InjectRepository(SysDepartmentData)
+    private departmentRepository: Repository<SysDepartmentData>,
+    @InjectRepository(SysDataRole)
+    private userRoleRepository: Repository<SysDataRole>,
     private redisService: RedisService,
     private paramConfigService: SysParamConfigService,
     @InjectEntityManager() private entityManager: EntityManager,
@@ -37,7 +37,7 @@ export class SysDataService {
   /**
    * 根据用户名查找已经启用的用户
    */
-  async findDataByUserName(username: string): Promise<SysUser | undefined> {
+  async findDataByUserName(username: string): Promise<SysData | undefined> {
     return await this.userRepository.findOne({
       username: username,
       status: 1,
@@ -50,7 +50,7 @@ export class SysDataService {
    * @param ip login ip
    */
   async getAccountDataInfo(uid: number, ip?: string): Promise<AccountInfoData> {
-    const user: SysUser = await this.userRepository.findOne({ id: uid });
+    const user: SysData = await this.userRepository.findOne({ id: uid });
     if (isEmpty(user)) {
       throw new ApiException(10017);
     }
@@ -131,7 +131,7 @@ export class SysDataService {
       );
 
       const password = this.util.md5(`${initPassword ?? '123456'}${salt}`);
-      const u = manager.create(SysUser, {
+      const u = manager.create(SysData, {
         departmentId: param.departmentId,
         username: param.username,
         password,
@@ -152,7 +152,7 @@ export class SysDataService {
         };
       });
       // 分配角色
-      await manager.insert(SysUserRole, insertRoles);
+      await manager.insert(SysDataRole, insertRoles);
     });
   }
 
@@ -161,7 +161,7 @@ export class SysDataService {
    */
   async updateData(param: UpdateDataDto): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
-      await manager.update(SysUser, param.id, {
+      await manager.update(SysData, param.id, {
         departmentId: param.departmentId,
         username: param.username,
         name: param.name,
@@ -172,7 +172,7 @@ export class SysDataService {
         status: param.status,
       });
       // 先删除原来的角色关系
-      await manager.delete(SysUserRole, { userId: param.id });
+      await manager.delete(SysDataRole, { userId: param.id });
       const insertRoles = param.roles.map((e) => {
         return {
           roleId: e,
@@ -180,7 +180,7 @@ export class SysDataService {
         };
       });
       // 重新分配角色
-      await manager.insert(SysUserRole, insertRoles);
+      await manager.insert(SysDataRole, insertRoles);
       if (param.status === 0) {
         // 禁用状态
         await this.forbiddenData(param.id);
@@ -194,7 +194,7 @@ export class SysDataService {
    */
   async infoData(
     id: number,
-  ): Promise<SysUser & { roles: number[]; departmentName: string }> {
+  ): Promise<SysData & { roles: number[]; departmentName: string }> {
     const user: any = await this.userRepository.findOne(id);
     if (isEmpty(user)) {
       throw new ApiException(10017);
@@ -216,7 +216,7 @@ export class SysDataService {
   /**
    * 查找列表里的信息
    */
-  async infoDataList(ids: number[]): Promise<SysUser[]> {
+  async infoDataList(ids: number[]): Promise<SysData[]> {
     const users = await this.userRepository.findByIds(ids);
     return users;
   }
@@ -264,7 +264,7 @@ export class SysDataService {
    * 根据部门ID进行分页查询用户列表
    * deptId = -1 时查询全部
    */
-  async page(
+  async pageData(
     uid: number,
     deptIds: number[],
     page: number,

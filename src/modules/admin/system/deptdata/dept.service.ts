@@ -7,7 +7,7 @@ import SysDataDepartment from 'src/entities/admin/sys-departmentdata.entity';
 import SysRoleDataDepartment from 'src/entities/admin/sys-role-departmentdata.entity';
 import SysData from 'src/entities/admin/sys-data.entity';
 import { EntityManager, In, Repository } from 'typeorm';
-import { SysRoleService } from '../role/role.service';
+import { SysRoleDataService } from '../roledata/role.service';
 import { DeptDataDetailInfo } from './dept.class';
 import { MoveDeptData, UpdateDeptDataDto } from './dept.dto';
 
@@ -21,7 +21,7 @@ export class SysDeptDataService {
     private roleDeptRepositoty: Repository<SysData>,
     @InjectEntityManager() private entityManager: EntityManager,
     @Inject(ROOT_ROLE_ID) private rootRoleId: number,
-    private roleService: SysRoleService,
+    private roleService: SysRoleDataService,
   ) {}
 
   /**
@@ -126,7 +126,7 @@ export class SysDeptDataService {
    * 根据当前角色id获取部门列表
    */
   async getDepts(uid: number): Promise<SysDataDepartment[]> {
-    const roleIds = await this.roleService.getRoleIdByUser(uid);
+    const roleIds = await this.roleService.getRoleIdByData(uid);
     let depts: any = [];
     if (includes(roleIds, this.rootRoleId)) {
       // root find all

@@ -32,8 +32,8 @@ export class UpdateDataInfoDto {
     required: false,
     description: '用户邮箱',
   })
-  @IsEmail()
-  @ValidateIf((o) => !isEmpty(o.email))
+  @IsString()
+  @IsOptional()
   email: string;
 
   @ApiProperty({
@@ -115,8 +115,8 @@ export class CreateDataDto {
     required: false,
     description: '邮箱',
   })
-  @IsEmail()
-  @ValidateIf((o) => !isEmpty(o.email))
+  @IsString()
+  @IsOptional()
   email: string;
 
   @ApiProperty({

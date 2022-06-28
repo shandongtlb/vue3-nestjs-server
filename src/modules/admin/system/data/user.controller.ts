@@ -64,7 +64,7 @@ export class SysDataController {
     @Body() dto: PageSearchDataDto,
     @AdminUser() user: IAdminUser,
   ): Promise<PageResult<PageSearchDataInfo>> {
-    const list = await this.DataService.page(
+    const list = await this.DataService.pageData(
       user.uid,
       dto.departmentIds,
       dto.page - 1,

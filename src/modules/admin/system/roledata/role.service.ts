@@ -202,7 +202,7 @@ export class SysRoleDataService {
   /**
    * 根据用户id查找角色信息
    */
-  async getRoleIdByUser(id: number): Promise<number[]> {
+  async getRoleIdByData(id: number): Promise<number[]> {
     const result = await this.userRoleRepository.find({
       where: {
         userId: id,
